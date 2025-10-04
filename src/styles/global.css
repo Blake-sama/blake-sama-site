@@ -50,3 +50,8 @@ html:hover::-webkit-scrollbar-thumb,
 .scrollable:hover::-webkit-scrollbar-thumb {
     background-color: var(--sb-thumb-hover);
 }
+.link-hitbox {
+    display: inline-block;
+    padding: 0.25rem 0.50rem;   /* enlarge target */
+    margin: -0.25rem -0.50rem;  /* cancel layout change */
+}
