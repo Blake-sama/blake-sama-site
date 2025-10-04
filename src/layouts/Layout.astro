@@ -9,10 +9,31 @@ import "../styles/global.css";
 		<meta name="generator" content={Astro.generator} />
 		<title>blake-sama</title>
 	</head>
-	<body class="bg-gradient-to-br from-gray-900 to-gray-800 text-white">
-        <div class="mx-auto max-w-screen-lg py-6 px-4 sm:px-6 lg:px-8">
-            <slot />
-        </div>
+	<body class="min-h-dvh bg-gradient-to-br from-gray-900 to-gray-800 text-white">
+        <div class="min-h-dvh flex items-center justify-center">
+			<div class="w-full max-w-[60dvw] mx-auto border rounded-lg bg-slate-800/60 backdrop-blur">
+				<!-- defines page height so page doesn't scroll -->
+				<div class="grid overflow-hidden grid-rows-[100px_minmax(500px,1fr)_75px] h-[80vh]">
+					<header class="px-6 py-8 bg-slate-600/60 rounded-t-lg backdrop-blur">
+						<!-- nav -->
+						<nav class="flex justify-center text-2xl gap-8">
+							<a href="/">home</a>
+							<a href="/about">about</a>
+							<a href="/projects">projects</a>
+							<a href="/posts">posts</a>
+						</nav>
+					</header>
+					<main class="px-6 py-4 overflow-y-auto overscroll-contain">
+						<slot />
+					</main>
+					<footer class="px-6 py-4 bg-slate-600/60 rounded-b-lg backdrop-blur">
+						<p class="text-center text-sm opacity-70">
+							webring would go here
+						</p>
+					</footer>
+				</div>
+			</div>
+		</div>
 	</body>
 </html>
 

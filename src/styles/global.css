@@ -1,2 +1,52 @@
+@import url('https://fonts.googleapis.com/css2?family=Cabin:ital,wght@0,400..700;1,400..700&display=swap');
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
+
+:root{
+    --sb-size: 10px;
+    --sb-size-hover: 12px;
+    --sb-thumb: rgba(219,181,161,0.7);
+    --sb-thumb-hover: rgba(219,181,161,.9);
+    --font-sans: 'Cabin', sans-serif;
+}
+
+/* Reserve space so widening doesn't jiggle layout */
+html, .scrollable { scrollbar-gutter: stable; }
+
+/* ===== Firefox ===== */
+html, .scrollable {
+    scrollbar-width: auto;
+    scrollbar-color: var(--sb-thumb) transparent;  /* thumb, track */
+}
+html:hover, .scrollable:hover {
+    scrollbar-width: auto;                         /* widen on hover */
+    scrollbar-color: var(--sb-thumb-hover) transparent;
+}
+
+/* ===== WebKit (Chrome/Edge/Safari) ===== */
+html::-webkit-scrollbar,
+.scrollable::-webkit-scrollbar {
+    width: var(--sb-size);
+    height: var(--sb-size);
+    background: transparent;                       /* kill white bg */
+}
+html::-webkit-scrollbar-track,
+.scrollable::-webkit-scrollbar-track {
+    background: transparent;                       /* ensure track stays invisible */
+}
+html::-webkit-scrollbar-thumb,
+.scrollable::-webkit-scrollbar-thumb {
+    background-color: var(--sb-thumb);
+    border-radius: 999px;
+    border: 3px solid transparent;                 /* padding so track looks invisible */
+    background-clip: padding-box;
+}
+html:hover::-webkit-scrollbar,
+.scrollable:hover::-webkit-scrollbar {
+    width: var(--sb-size-hover);
+    height: var(--sb-size-hover);
+}
+html:hover::-webkit-scrollbar-thumb,
+.scrollable:hover::-webkit-scrollbar-thumb {
+    background-color: var(--sb-thumb-hover);
+}

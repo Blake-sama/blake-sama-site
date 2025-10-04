@@ -19,29 +19,24 @@ posts.sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
     <title>posts | blake-sama</title>
 </head>
 <Layout>
-    <body>
-        <main>
-            <Navigation />
-            <h1 class="text-4xl text-center py-8">a growing list of things i want to say</h1>
-            <ul class="divide-y">
-                {posts.map((post) => (
-                        <li class="flex items-baseline justify-between gap-8 py-2">
-                            <a
-                                    href={`/posts/${post.data.slug ?? post.slug}`}
-                                    class="font-medium hover:underline"
-                            >
-                                {post.data.title}
-                            </a>
+    <h1 class="text-4xl text-center">a growing list of things i want to say</h1>
+        <ul class="divide-y">
+            {posts.map((post) => (
+                <li class="flex items-baseline justify-between gap-8 py-4">
+                    <a
+                            href={`/posts/${post.data.slug ?? post.slug}`}
+                            class="font-medium hover:underline"
+                    >
+                        {post.data.title}
+                    </a>
 
-                            <time
-                                    datetime={post.data.pubDate.toISOString()}
-                                    class="text-sm opacity-70"
-                            >
-                                {post.data.pubDate.toLocaleDateString()}
-                            </time>
-                        </li>
-                ))}
-            </ul>
-        </main>
-    </body>
+                    <time
+                            datetime={post.data.pubDate.toISOString()}
+                            class="text-sm opacity-70"
+                    >
+                        {post.data.pubDate.toLocaleDateString()}
+                    </time>
+                </li>
+            ))}
+        </ul>
 </Layout>

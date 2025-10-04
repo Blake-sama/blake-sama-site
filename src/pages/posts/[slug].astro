@@ -23,7 +23,6 @@ const { Content } = await post.render();
 const { title, pubDate } = post.data;
 ---
 <Layout>
-    <Navigation />
     <main class="mx-auto max-w-prose px-4 sm:px-6 lg:px-8 py-8">
         <h1 class="text-3xl font-bold mb-2">{post.data.title}</h1>
         <p class="text-sm opacity-70 mb-6">
@@ -33,7 +32,7 @@ const { title, pubDate } = post.data;
         </p>
 
         <!-- dark site? add prose-invert -->
-        <article class="prose prose-invert">
+        <article class="text-lg prose prose-invert">
             <Content />
         </article>
     </main>
