@@ -1,0 +1,47 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Navigation from '../../components/Navigation.astro';
+import '../../styles/global.css';
+
+import { getCollection, type CollectionEntry } from 'astro:content';
+type Post = CollectionEntry<'posts'>;
+
+const posts: CollectionEntry<'posts'>[] = (await getCollection(
+    'posts',
+    ({ data }: Post) => (import.meta.env.PROD ? !data.draft : true)
+)) satisfies Post[];
+
+
+posts.sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
+---
+
+<head>
+    <title>posts | blake-sama</title>
+</head>
+<Layout>
+    <body>
+        <main>
+            <Navigation />
+            <h1 class="text-4xl text-center py-8">a growing list of things i want to say</h1>
+            <ul class="divide-y">
+                {posts.map((post) => (
+                        <li class="flex items-baseline justify-between gap-8 py-2">
+                            <a
+                                    href={`/posts/${post.data.slug ?? post.slug}`}
+                                    class="font-medium hover:underline"
+                            >
+                                {post.data.title}
+                            </a>
+
+                            <time
+                                    datetime={post.data.pubDate.toISOString()}
+                                    class="text-sm opacity-70"
+                            >
+                                {post.data.pubDate.toLocaleDateString()}
+                            </time>
+                        </li>
+                ))}
+            </ul>
+        </main>
+    </body>
+</Layout>

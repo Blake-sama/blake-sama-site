@@ -1,0 +1,40 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+import Layout
+    from "../../layouts/Layout.astro";
+import Navigation
+    from "../../components/Navigation.astro";
+type Post = CollectionEntry<'posts'>;
+
+export async function getStaticPaths() {
+    const entries: CollectionEntry<'posts'>[] = (await getCollection(
+        'posts',
+        ({ data }: Post) => (import.meta.env.PROD ? !data.draft : true)
+    )) satisfies Post[];
+
+    return entries.map((post) => ({
+        params: { slug: post.data.slug ?? post.slug },
+        props: { post },
+    }));
+}
+
+const { post } = Astro.props as { post: CollectionEntry<'posts'> };
+const { Content } = await post.render();
+const { title, pubDate } = post.data;
+---
+<Layout>
+    <Navigation />
+    <main class="mx-auto max-w-prose px-4 sm:px-6 lg:px-8 py-8">
+        <h1 class="text-3xl font-bold mb-2">{post.data.title}</h1>
+        <p class="text-sm opacity-70 mb-6">
+            <time datetime={post.data.pubDate.toISOString()}>
+                {post.data.pubDate.toLocaleDateString()}
+            </time>
+        </p>
+
+        <!-- dark site? add prose-invert -->
+        <article class="prose prose-invert">
+            <Content />
+        </article>
+    </main>
+</Layout>
