@@ -8,6 +8,45 @@ import '../styles/global.css';
 </head>
 <body>
     <Layout>
-        <h1 class="text-center text-2xl">oh hey, you made it! this is my website (i'm blake-sama if you didn't know).</h1>
+        <div class="text-center text-lg space-y-1">
+            <h1 class="text-2xl py-2">oh hey, you made it! this is my website (i'm blake-sama if you didn't know).</h1>
+            <p>like most people on the web, i don't really know what to put on a website . . . i just wanted my own.</p>
+            <h1 id="social-username" class="text-4xl text-orange-400 py-2">blake-sama</h1>
+            <h2 class="text-2xl py-2"><b>social media links</b></h2>
+            <ul id="social-links" class="flex justify-center gap-4 text-xl">
+                <li>
+                    <a data-title="theblakesama" href="https://discordapp.com/users/838545080083939368">discord</a>
+                </li>
+                <li>
+                    <a data-title="Blake-sama" href="https://github.com/blakes-sama">github</a>
+                </li>
+                <li>
+                    <a data-title="Internet Twink" href="https://steamcommunity.com/id/internet-twink">steam</a>
+                </li>
+            </ul>
+        </div>
     </Layout>
 </body>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const socialUsername = document.getElementById('social-username');
+        const socialLinks = document.getElementById('social-links');
+        if (!socialUsername || !socialLinks) return;
+        const defaultUsername = socialUsername.textContent || "blake-sama";
+
+        document.querySelectorAll('#social-links a[data-title]').forEach((a) => {
+            a.addEventListener('mouseenter', () => {
+                socialUsername.textContent = a.getAttribute('data-title') || defaultUsername;
+            });
+            a.addEventListener('mouseleave', () => {
+                socialUsername.textContent = defaultUsername;
+            });
+            a.addEventListener('focus', () => {
+                socialUsername.textContent = a.getAttribute('data-title') || defaultUsername;
+            });
+            a.addEventListener('blur', () => {
+                socialUsername.textContent = defaultUsername;
+            });
+        });
+    })
+</script>
