@@ -6,13 +6,17 @@ import '../../styles/global.css';
 import { getCollection, type CollectionEntry } from 'astro:content';
 type Post = CollectionEntry<'posts'>;
 
-const posts: CollectionEntry<'posts'>[] = (await getCollection(
+const all: CollectionEntry<'posts'>[] = (await getCollection(
     'posts',
     ({ data }: Post) => (import.meta.env.PROD ? !data.draft : true)
 )) satisfies Post[];
 
+const slugOf = (p: Post) => p.data.slug ?? p.slug;
+const exclude = new Set(['credits']);
 
-posts.sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
+const posts = all
+    .filter((p) => !exclude.has(slugOf(p)))
+    .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
 ---
 
 <head>
@@ -20,23 +24,29 @@ posts.sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
 </head>
 <Layout>
     <h1 class="text-4xl text-center">a growing list of things i want to say</h1>
-        <ul class="divide-y">
-            {posts.map((post) => (
-                <li class="flex items-baseline justify-between gap-8 py-4">
-                    <a
-                            href={`/posts/${post.data.slug ?? post.slug}`}
-                            class="font-medium hover:underline"
-                    >
-                        {post.data.title}
-                    </a>
+    <ul class="border-b-1 text-lg">
+        <li class="flex items-baseline justify-between gap-8 py-4">
+            <a href="/posts/credits" class="font-medium hover:underline">credits & acknowledgments</a>
+            <p class="text-sm opacity-70">pinned</p>
+        </li>
+    </ul>
+    <ul class="divide-y text-lg">
+        {posts.map((post) => (
+            <li class="flex items-baseline justify-between gap-8 py-4">
+                <a
+                        href={`/posts/${post.data.slug ?? post.slug}`}
+                        class="font-medium hover:underline"
+                >
+                    {post.data.title}
+                </a>
 
-                    <time
-                            datetime={post.data.pubDate.toISOString()}
-                            class="text-sm opacity-70"
-                    >
-                        {post.data.pubDate.toLocaleDateString()}
-                    </time>
-                </li>
-            ))}
-        </ul>
+                <time
+                        datetime={post.data.pubDate.toISOString()}
+                        class="text-sm opacity-70"
+                >
+                    {post.data.pubDate.toLocaleDateString()}
+                </time>
+            </li>
+        ))}
+    </ul>
 </Layout>
