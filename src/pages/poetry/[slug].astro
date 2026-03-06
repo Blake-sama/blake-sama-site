@@ -1,0 +1,39 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+import Layout
+    from "../../layouts/Layout.astro";
+import Navigation
+    from "../../components/Navigation.astro";
+type Poetry = CollectionEntry<'poetry'>;
+
+export async function getStaticPaths() {
+    const entries: CollectionEntry<'poetry'>[] = (await getCollection(
+        'poetry',
+        ({ data }: Poetry) => (import.meta.env.PROD ? !data.draft : true)
+    )) satisfies Poetry[];
+
+    return entries.map((poetry) => ({
+        params: { slug: poetry.data.slug ?? poetry.slug },
+        props: { poetry },
+    }));
+}
+
+const { poetry } = Astro.props as { poetry: CollectionEntry<'poetry'> };
+const { Content } = await poetry.render();
+const { title, pubDate } = poetry.data;
+---
+<Layout>
+    <main class="mx-auto max-w-prose px-4 sm:px-6 lg:px-8 py-8">
+        <h1 class="text-3xl font-bold mb-2">{poetry.data.title}</h1>
+        <p class="text-sm opacity-70 mb-6">
+            <time datetime={poetry.data.pubDate.toISOString()}>
+                {poetry.data.pubDate.toLocaleDateString()}
+            </time>
+        </p>
+
+        <!-- dark site? add prose-invert -->
+        <article class="text-lg prose prose-invert">
+            <Content />
+        </article>
+    </main>
+</Layout>

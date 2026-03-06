@@ -1,0 +1,46 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Navigation from '../../components/Navigation.astro';
+import '../../styles/global.css';
+
+import { getCollection, type CollectionEntry } from 'astro:content';
+type Poetry = CollectionEntry<'poetry'>;
+
+const all: CollectionEntry<'poetry'>[] = (await getCollection(
+    'poetry',
+    ({ data }: Poetry) => (import.meta.env.PROD ? !data.draft : true)
+)) satisfies Poetry[];
+
+const slugOf = (p: Poetry) => p.data.slug ?? p.slug;
+const exclude = new Set(['credits']);
+
+const poetry = all
+    .filter((p) => !exclude.has(slugOf(p)))
+    .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
+---
+
+<head>
+    <title>poetry | blake-sama</title>
+</head>
+<Layout>
+    <h1 class="text-4xl text-center">poetry - an expression of sorts</h1>
+    <ul class="divide-y text-lg">
+        {poetry.map((poetry) => (
+            <li class="flex items-baseline justify-between gap-8 py-4">
+                <a
+                        href={`/poetry/${poetry.data.slug ?? poetry.slug}`}
+                        class="font-medium hover:underline"
+                >
+                    {poetry.data.title}
+                </a>
+
+                <time
+                        datetime={poetry.data.pubDate.toISOString()}
+                        class="text-sm opacity-70"
+                >
+                    {poetry.data.pubDate.toLocaleDateString()}
+                </time>
+            </li>
+        ))}
+    </ul>
+</Layout>
