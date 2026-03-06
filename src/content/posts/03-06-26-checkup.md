@@ -6,7 +6,7 @@ slug: 'checkup1'
 author: 'Blake-sama'
 draft: false
 ---
-# this site still runs?
+# it's been a while
 
 it's been about . . . *checks calendar* five months now. i still own a vps because i bought a year of it.
 will i renew it? i don't know.
